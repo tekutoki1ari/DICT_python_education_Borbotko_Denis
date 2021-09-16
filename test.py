@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 print("Python education")
 =======
 print("education")
