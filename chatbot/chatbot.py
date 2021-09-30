@@ -10,9 +10,9 @@ c = int(input())
 age = (a*70+b*21+c*15)%105
 print("Your age is " + str(age) + " that's a good time to start programming!")
 print("Now I will prove to you that I can count to any number you want.")
-num = int(input())
+num = int(input()) + 1
 for i in range(num):
-    print(i, end="\n" + "!")
+    print(i, end="!\n")
 print("Completed, have a nice day!")
 print("Let's test your programming knowledge.")
 print("""
@@ -30,4 +30,3 @@ def answers(n_answer):
         print("Please, try again.")
         answers("1")
 answers("2")
-
