@@ -1,4 +1,4 @@
-# import random
+import random
 text = ("""
 Starting to make a coffee
 Grinding coffee beans
@@ -8,171 +8,259 @@ Pouring coffee into the cup
 Pouring some milk into the cup
 Coffee is ready!""")
 
-# waters = random.randint(0, 1000)
-# milks = random.randint(0, 500)
-# beamss = random.randint(0, 250)
-# cupss = random.randint(0, 25)
-waters = 400
-milks = 540
-beamss = 120
-cupss = 9
+waters = 0
+milks = 0
+beamss = 0
+cupss = 0
+cost = 0
 
-cost_espresso = 4
-cost_latte = 7
-cost_cappuchino = 6
+# cost_espresso = 4
+# cost_latte = 7
+# cost_cappuchino = 6
+#
+# waterf = int(0)
+# milkf = int(0)
+# beamsf = int(0)
+# cupsf = int(0)
+# n = 0
 
-waterf = int(0)
-milkf = int(0)
-beamsf = int(0)
-cupsf = int(0)
-n = 550
+save = open("save.txt", "r")
+line = save.readlines()
+try:
+    if int(line[0]) == 0 and int(line[1]) == 0 and int(line[2]) == 0 and int(line[3]) == 0 and int(line[4]) == 0:
+        save.close()
+        waters = random.randint(0, 10000)
+        milks = random.randint(0, 5000)
+        beamss = random.randint(0, 1500)
+        cupss = random.randint(0, 50)
+        cost = 0
+        save = open('save.txt', 'w')
+        save.write(str(waters) + f"\n")
+        save.write(str(milks) + f"\n")
+        save.write(str(beamss) + f"\n")
+        save.write(str(cupss) + f"\n")
+        save.write(str(cost) + f"\n")
+        save.close()
+    else:
+        save = open("save.txt")
+        waters = int(line[0])
+        milks = int(line[1])
+        beamss = int(line[2])
+        cups = int(line[3])
+        cost = int(line[4])
+        save.close()
+finally:
+    pass
 
-def espresso(message_espresso):
-    global water, milk, beams, cups, cost_espresso, waterf, milkf, beamsf, cupsf, n
-    water = int((waters + waterf) / 250)
-    beams = int((beamss + beamsf) / 16)
-    cups = int(cupss + cupsf)
-    minimum = min([water, beams, cups])
-    cup = int(input("How many cups of coffe u need?"))
-    final_cost = cup * cost_espresso
-    if minimum >= cup:
-        money = int(input(f"Please, insert cash - {final_cost}"))
-        if money == final_cost:
+
+class Coffeemachine:
+    def __init__(self, buy, fill, take, remaining, exit):
+        self.buy = buy
+        self.fill = fill
+        self.take = take
+        self.remaining = remaining
+        self.exit = exit
+
+
+function = Coffeemachine("buy", "fill", "take", "remaining", "exit")
+
+
+def Function():
+    global save
+    choose = input(str("Chose function: buy, fill, take, remaining or exit"))
+    if choose == function.buy:
+        Buy()
+    elif choose == function.take:
+        take()
+    elif choose == function.remaining:
+        remaining()
+    elif choose == function.exit:
+        save = open("save.txt", "w")
+        save.write(f"{str(waters)}\n")
+        save.write(f"{str(milks)}\n")
+        save.write(f"{str(cupss)}\n")
+        save.write(f"{str(cost)}\n")
+        save.close()
+        print("good bye")
+    else:
+        print("try again")
+        Function()
+
+
+def Buy():
+    global cost
+    choose = int(input("chose function: 1-espresso, 2-lqtte, 3-cappuccino, 4-back"))
+    if choose == 1:
+        espresso()
+    elif choose == 2:
+        latte()
+    elif choose == 3:
+        cappuccino()
+    elif choose == 4:
+        Function()
+    else:
+        print("try again")
+
+
+def espresso():
+    global cost, waters, beamss, cupss, save, cost
+    cost = 4
+    water = int(waters / 250)
+    beams = int(beamss / 16)
+    minimum = min([water])
+    cups_need = int(input("how many cups of coffee do u need?"))
+    n = cost * cups_need
+    if minimum >= cups_need:
+        give_money = int(input(f"insert {n} money"))
+        if give_money >= n:
+            change = give_money - n
+            print(f"Your change {change}")
+            waters = water * 250 * cups_need
+            beamss = beams * 16 * cups_need
+            cupss = cupss - cups_need
+            cost = cost + n
             print(text)
-            n = n + money
-            coffemachine('')
-        elif money < final_cost:
-            print("You have insert not enough amount of money")
-            espresso('espresso')
+            Function()
         else:
-            change = money - final_cost
-            print("Take ur change")
-            print(text)
-    elif (minimum < cup):
-        print("We have not enough ingredients, sorry")
-        print("pls, fill machine")
-        coffemachine('')
+            print("you have insert not enough money")
+            espresso()
+
+    elif minimum < cups_need:
+        if cups_need > water:
+            enough_water = (cups_need * 250) - waters
+            print(f"for {cups_need} cups of coffe you dont have enough {enough_water} ml of water")
+            Fill()
+        elif cups_need > beams:
+            enough_beams = (cups_need * 16) - beamss
+            print(f"for {cups_need} cups of coffe you dont have enough {enough_beams} g of beams")
+            Fill()
+        elif cups_need > cupss:
+            enough_cups = cups_need - cupss
+            print(f"for {cups_need} cups of coffe you dont have enough {enough_cups} cups")
+            Fill()
 
 
-def latte(message_latte):
-    global water, milk, beams, cups, cost_latte, waterf, milkf, beamsf, cupsf, n
-    water = int((waters + waterf) / 350)
-    milk = int((milks + milkf) / 75)
-    beams = int((beamss - beamsf) / 20)
-    cups = int(cupss + cupsf)
+def latte():
+    global cost, waters, milks, beamss, cupss, save, cost
+    cost = 7
+    water = int(waters / 350)
+    milk = int(milks / 75)
+    beams = int(beamss / 20)
     minimum = min([water, milk, beams, cups])
-    cup = int(input("How many cups of coffe u need?"))
-    final_cost = cup * cost_latte
-    if (minimum >= cup):
-        money = int(input(f"Please, insert cash - {final_cost}"))
-        if money == final_cost:
+    cups_need = int(input("how many cups of coffee do u need?"))
+    n = cost * cups_need
+    if minimum >= cups_need:
+        give_money = int(input(f"insert {n} money"))
+        if give_money >= n:
+            change = give_money - n
+            print(f"your change {change}")
+            waters = waters - 350 * cups_need
+            milks = milks - 75 * cups_need
+            beamss = beamss - 20 * cups_need
+            cupss = cups - cups_need
+            cost = cost + n
             print(text)
-            n = n + money
-        elif money < final_cost:
-            print("You have insert not enough amount of money")
-            latte('latte')
+            Function()
         else:
-            change = money - final_cost
-            print(f"Take ur change {change}")
-            print(text)
-    elif (minimum < cup):
-        print("We have not enough ingredients, sorry")
-        print("pls, fill machine")
-        coffemachine('')
+            print("you have insert not enough money")
+        latte()
+    elif minimum < cups_need:
+        if cups_need > water:
+            enough_water = (cups_need * 350) - waters
+            print(f"for {cups_need} cups of coffee we dont have enough {enough_water} ml of water")
+            Fill()
+        elif cups_need > milk:
+            enough_milk = (cups_need * 75) - milks
+            print(f"for {cups_need} cups of coffee we dont have enough {enough_milk} ml of milk")
+            Fill()
+        elif cups_need > beams:
+            enough_beams = (cups_need * 20) - cupss
+            print(f"for {cups_need} cups of coffee we dont have enough {enough_beams} g of beams")
+            Fill()
+        elif cups_need > cupss:
+            enough_cups = cups_need - cupss
+            print(f"for {cups_need} cups of coffee we dont have enough {enough_cups} cups")
+            Fill()
 
 
-def cappuchino(message_cappuchino):
-    global water, milk, beams, cups, cost_cappuchino, waterf, milkf, beamsf, cupsf, n
-    water = int((waters + waterf) / 200)
-    milk = int((milks + milkf) / 100)
-    beams = int((beamss - beamsf) / 12)
-    cups = int(cupss + cupsf)
+def cappuccino():
+    global cost, waters, milks, beamss, cupss, money
+    cost = 6
+    water = int(waters / 200)
+    milk = int(milks / 100)
+    beams = int(beamss / 12)
     minimum = min([water, milk, beams, cups])
-    cup = int(input("How many cups of coffe u need?"))
-    final_cost = cup * cost_cappuchino
-
-    if (minimum >= cup):
-        money = int(input(f"Please, insert cash - {final_cost}"))
-        if money == final_cost:
+    cups_need = int(input("How many cups of coffee do u need?"))
+    n = cost * cups_need
+    if minimum >= cups_need:
+        give_money = int(input(f"insert {n} money"))
+        if give_money >= n:
+            change = give_money - n
+            print(f"your change {change}")
+            waters = waters - 200 * cups_need
+            milks = milks - 100 * cups_need
+            beamss = beamss - 12 * cups_need
+            cost = cost + change
             print(text)
-            n = n + money
-        elif money < final_cost:
-            print("You have insert not enough amount of money")
-            cappuchino('cappuchino')
+            Function()
         else:
-            change = money - final_cost
-            print(f"Take ur change {change}")
-            print(text)
-    elif (minimum < cup):
-        print("We have not enough ingredients, sorry")
-        print("pls, fill machine")
-        coffemachine('')
+            print("You have insert not enough money")
+            cappuccino()
+    elif minimum < cups_need:
+        if cups_need > water:
+            enough_water = (cups_need * 200) - waters
+            print(f"for {cups_need} cups of coffee we dont have enough {enough_water} ml of water")
+            Fill()
+        elif cups_need > milk:
+            enough_milk = (cups_need * 100) - milks
+            print(f"for {cups_need} cups of coffee we dont have enough {enough_milk} ml of milk")
+            Fill()
+        elif cups_need > beamss:
+            enough_beams = (cups_need * 12) - beamss
+            print(f"for {cups_need} cups of coffee we dont have enough {enough_beams} g of beams")
+            Fill()
+        elif cups_need > cups:
+            enough_cups = cups_need - cupss
+            print(f"for {cups_need} cups of coffee we dont have enough {enough_cups} cups")
+            Fill()
+
+
+def Fill():
+    global save, waters, milks, cupss, beamss
+    fill = int(input("what u want to add? 1 - water, 2 - milk, 3 - beams, 4 - cups, 5 - back"))
+    if fill == 1:
+        water_add = int(input("How many water do u want to add?"))
+        waters = waters + water_add
+        Function()
+    elif fill == 2:
+        milk_add = int(input("How many milk do u want to add?"))
+        milks = milks + milk_add
+        Function()
+    elif fill == 3:
+        beams_add = int(input("How many beams do u want to add?"))
+        beamss = beamss + beams_add
+    elif fill == 4:
+        cups_add = int(input("How many cups do u want to add?"))
+        cupss = cupss + cups_add
+        Function()
+    elif fill == 5:
+        Function()
+    else:
+        print("Unknown command")
+        Fill()
+
 
 def take():
-    global n
-    print(f"{n} money")
-    n = 0
-    coffemachine('')
+    global cost
+    print(cost)
+    take_money = int(input("how many money do u want to take away?"))
+    cost = cost - take_money
+    Function()
 
 
-def coffemachine(message_coffemachine):
-    global waters, waterf, milks, milkf, beamss, beamsf, cupss, cupsf, cost_latte, cost_espresso, cost_cappuchino, n
-    print("""What u whant to do?: 
-    1 - buy, 
-    2 - fill, 
-    3 - take, 
-    4 - show amount of ingredients
-    0 - exit""")
-    answer = int(input())
-    if answer == 1:
-        print("""What coffee do u want?
-        1 - espresso
-        2 - latte
-        3 - cappuccino
-        4 - back""")
-        choose_coffee = int(input())
-        if choose_coffee == 1:
-            espresso('')
-        elif choose_coffee == 2:
-            latte('')
-        elif choose_coffee == 3:
-            cappuchino('')
-        elif choose_coffee == 4:
-            coffemachine('')
-    elif answer == 2:
-        print("""do u want to continue?
-        1 - yes
-        2 - no""")
-        answer = int(input())
-        if answer == 1:
-            waterf = int(input("insert amount of added water"))
-            milkf = int(input("insert amount of added milk"))
-            beamsf = int(input("insert amount of added beams"))
-            cupsf = int(input("insert amount of added cups"))
-
-        elif answer == 2:
-            coffemachine('')
-
-    elif answer == 3:
-        print("""do u want to continue?
-        1 - yes
-        2 - no""")
-        answer = int(input())
-        if answer == 1:
-            take()
-        elif answer == 2:
-            coffemachine('')
-
-    elif answer == 4:
-        print("water = ", waters + waterf,"ml")
-        print("milk = ", milks + milkf, "ml")
-        print("beams = ", beamss + beamsf, "mg")
-        print("cups = ", cupss + cupsf)
-        print("money =", n)
-    elif answer == 0:
-        print("bye")
-        exit()
-    coffemachine('')
+def remaining():
+    print(f"water - {waters}, milk - {milks}, beams - {beamss}, cups - {cupss}, money - {cost}")
+    Function()
 
 
-coffemachine('')
+Function()
