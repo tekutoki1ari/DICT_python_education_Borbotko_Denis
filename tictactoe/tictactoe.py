@@ -10,7 +10,6 @@ o_win = 0
 buf = x
 pop = 0
 coordinates = 0
-value = 0
 
 
 def Restart():
@@ -37,9 +36,8 @@ def Restart():
 def play():
     global game
     game = list(['_', '_', '_', '_', '_', '_', '_', '_', '_'])
-    global x, o, x_win, o_win, pop, buf, coordinates, value
+    global x, o, x_win, o_win, pop, buf, coordinates
     while True:
-        value = 0
         pop = 0
         coordinates = 0
         word = "".join(map(str, game))
