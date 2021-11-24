@@ -36,17 +36,34 @@ def number_of_payments():
         print(f"it will takes {years} years and {months} months")
 
 
+def diff():
+    principal = int(input("Enter the loan principal:"))
+    periods = int(input("Enter the number of periods:"))
+    interest = float(input("Enter the loan interest:"))
+    i = interest / (12 * 100)
+    overpayment = 0
+    for m in range(1, periods + 1):
+        differ = math.ceil((principal / periods) + i * (principal - ((principal * (m - 1)) / periods)))
+        print(f"Month {m}: payment is {differ}")
+        overpayment = overpayment + differ
+        continue
+    print(f"Overpayment = {overpayment - principal}")
+
+
 def start():
-    sstart = int(input("""What do you want to calculate?
+    select = int(input("""What do you want to calculate?
 type "1" for number of monthly payments,
 type "2" for annuity monthly payment amount,
-type "3" for loan principal: """))
-    if sstart == 1:
+type "3" for loan principal: 
+type "4" for diff: """))
+    if select == 1:
         number_of_payments()
-    elif sstart == 2:
+    elif select == 2:
         annual_payment()
-    elif sstart == 3:
+    elif select == 3:
         loan_principle()
+    elif select == 4:
+        diff()
     else:
         print("try again")
         start()
