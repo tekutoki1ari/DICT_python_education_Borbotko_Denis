@@ -19,7 +19,7 @@ def matrix_addition():
     matrix_a = []
     matrix_b = []
     matrix_plus = []
-    size = input(f'Input matrix size\n>>> ')
+    size = input(f'Input matrix size\n: ')
     size = size.replace(' ', '')
     if size.isnumeric():
         size = list(size)
@@ -42,4 +42,29 @@ def matrix_addition():
         print(' '.join(map(str, matrix_plus)))
 
 
-matrix_addition()
+# matrix_addition()
+
+
+def multiply_matrix():
+    matrix_a = []
+    matrix_multiply = []
+    size = input(f'Input matrix size\n>>> ')
+    size = size.replace(' ', '')
+    constant = int(input(f'Input constant\n>>> '))
+    if size.isnumeric():
+        size = list(size)
+        size_m = int(size[0]) * int(size[1])
+        print('Matrix A')
+        for i in range(0, int(size_m)):
+            number = input(f'Element {i}\n>>> ')
+            matrix_a.append(number)
+            i += 1
+        for i in range(0, len(matrix_a)):
+            matrix_multiply.append(int(matrix_a[i]) * int(constant))
+            i += 1
+        for i in range(0, len(matrix_multiply), int(size[1]) + 1):
+            matrix_multiply.insert(i, '\n')
+        print(' '.join(map(str, matrix_multiply)))
+
+
+multiply_matrix()
