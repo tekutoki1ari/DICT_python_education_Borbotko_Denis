@@ -88,20 +88,81 @@ def matrix_multiplication():
             main()
 
 
+def matrix_transpose():
+    matrix = []
+    size = input('Input size matrix\n>>> ')
+    size = size.replace(' ', '')
+    try:
+        int(size[0])
+        ma = int(size[0])
+        na = int(size[1])
+        print('Matrix')
+        for i in range(0, ma):
+            new_list = []
+            for j in range(na):
+                number = input(f'Element {j}\n>>> ')
+                new_list.append(number)
+            matrix.append(new_list)
+        for i in matrix:
+            print(' '.join(map(str, i)))
+
+        print('''
+1. Main diagonal
+2. Vertical line
+3. Horizontal line
+0. Back 
+''')
+        select = input('\n>>> ')
+        if select.isnumeric():
+            select = int(select)
+            if select == 0:
+                main()
+            elif select == 1:
+                print('TRANSPOSED')
+                transposed = list(zip(*matrix))
+                for i in transposed:
+                    print(' '.join(map(str, i)))
+                main()
+            elif select == 2:
+                transposed = []
+                for i in range(na):
+                    new_list = []
+                    for j in reversed(matrix[i]):
+                        new_list.append(j)
+                    transposed.append(new_list)
+                for i in transposed:
+                    print(' '.join(map(str, i)))
+                main()
+            elif select == 3:
+                transposed = []
+                for i in reversed(matrix):
+                    transposed.append(i)
+                for i in transposed:
+                    print(' '.join(map(str, i)))
+                main()
+    except ValueError:
+        print('Try Again!')
+        matrix_transpose()
+
+
 def main():
-    choose = int(input('''select funct:
-                        1 - matrix addition
-                        2 - matrix constant multiplication
-                        3 - matrix multiplication
-                        0 - exit
-                        '''))
-    if choose == 1:
+    select = int(input('''
+select funct:
+1 - matrix addition
+2 - matrix constant multiplication
+3 - matrix multiplication
+4 - matrix transpose
+0 - exit
+'''))
+    if select == 1:
         matrix_addition()
-    elif choose == 2:
+    elif select == 2:
         matrix_constant_multiplication()
-    elif choose == 3:
+    elif select == 3:
         matrix_multiplication()
-    elif choose == 0:
+    elif select == 4:
+        matrix_transpose()
+    elif select == 0:
         print('bye')
     else:
         print('try again')
