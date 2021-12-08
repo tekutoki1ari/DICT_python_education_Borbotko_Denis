@@ -221,7 +221,6 @@ def inverse_matrix():
 
     def disp(m):
         print('\n'.join([' '.join(['{:4}'.format(item) for item in row]) for row in m]))
-        # print()
         pass
 
     idm = gen_id_mat(n)
@@ -236,14 +235,14 @@ def inverse_matrix():
                         matrix = row_swap(matrix, row, g)
 
             if matrix[row][col] != 0 and idm[row][col] == 1:
-                multiply = 1 / matrix[row][col]
+                # multiply = 1 / matrix[row][col]
                 id_inv = row_op_1(id_inv, row, row, (1 / matrix[row][col]))
                 matrix = row_op_1(matrix, row, row, (1 / matrix[row][col]))
                 count += 1
                 for const in range(n):
                     if const == row:
                         continue
-                    multiply = matrix[const][col]
+                    # multiply = matrix[const][col]
                     id_inv = row_op_2(id_inv, const, row, matrix[const][col])
                     matrix = row_op_2(matrix, const, row, matrix[const][col])
 
