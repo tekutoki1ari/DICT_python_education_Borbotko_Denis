@@ -26,7 +26,7 @@ def matrix_addition():
         for i in range(0, len(matrix_plus), int(size[1]) + 1):
             matrix_plus.insert(i, '\n')
         print(' '.join(map(str, matrix_plus)))
-        main()
+        menu()
 
 
 def matrix_constant_multiplication():
@@ -49,7 +49,7 @@ def matrix_constant_multiplication():
         for i in range(0, len(matrix_multiply), int(size[1]) + 1):
             matrix_multiply.insert(i, '\n')
         print(' '.join(map(str, matrix_multiply)))
-        main()
+        menu()
 
 
 def matrix_multiplication():
@@ -86,7 +86,7 @@ def matrix_multiplication():
             r = []
         for i in m:
             print(' '.join(map(str, i)))
-            main()
+            menu()
 
 
 def matrix_transpose():
@@ -117,13 +117,13 @@ def matrix_transpose():
         if select.isnumeric():
             select = int(select)
             if select == 0:
-                main()
+                menu()
             elif select == 1:
                 print('TRANSPOSED')
                 transposed = list(zip(*matrix))
                 for i in transposed:
                     print(' '.join(map(str, i)))
-                main()
+                menu()
             elif select == 2:
                 transposed = []
                 for i in range(na):
@@ -133,14 +133,14 @@ def matrix_transpose():
                     transposed.append(new_list)
                 for i in transposed:
                     print(' '.join(map(str, i)))
-                main()
+                menu()
             elif select == 3:
                 transposed = []
                 for i in reversed(matrix):
                     transposed.append(i)
                 for i in transposed:
                     print(' '.join(map(str, i)))
-                main()
+                menu()
     except ValueError:
         print('Try Again!')
         matrix_transpose()
@@ -177,10 +177,89 @@ def determinant():
     for i in matrix_def:
         print(' '.join(map(str, i)))
     print(f'Your determinant:  {str(calc(na, matrix_def))}')
-    main()
+    menu()
 
 
-def main():
+def inverse_matrix():
+    matrix = []
+    size = input('Input size matrix\n>>> ')
+    size = size.replace(' ', '')
+    m = int(size[0])
+    n = int(size[1])
+    print('Matrix')
+    for i in range(0, n):
+        line = []
+        for j in range(0, m):
+            line.append(int(input(f'Element {j}\n>>> ')))
+        matrix.append(line)
+
+    def gen_id_mat(n):
+        l = [[0 for i in range(n)] for j in range(n)]
+        for k in range(n):
+            l[k][k] = 1
+        return l
+
+    def gen_id_mat1(n):
+        l = [[0.0 for i in range(n)] for j in range(n)]
+        for k in range(n):
+            l[k][k] = 1.0
+        return l
+
+    def row_swap(m, r1, r2):
+        m[r1], m[r2] = m[r2], m[r1]
+        return m
+
+    def row_op_1(m, r1, r2, c):
+        for i in range(len(m)):
+            m[r1][i] = (m[r2][i]) * c
+        return m
+
+    def row_op_2(m, r1, r2, c):
+        for i in range(len(m)):
+            m[r1][i] = m[r1][i] - (c * m[r2][i])
+        return m
+
+    def disp(m):
+        print('\n'.join([' '.join(['{:4}'.format(item) for item in row]) for row in m]))
+        # print()
+        pass
+
+    idm = gen_id_mat(n)
+    id_inv = gen_id_mat(n)
+
+    count = 0
+    for col in range(n):
+        for row in range(n):
+            if idm[row][col] == 1 and matrix[row][col] == 0:
+                for g in range(n):
+                    if matrix[g][col] != 0:
+                        matrix = row_swap(matrix, row, g)
+
+            if matrix[row][col] != 0 and idm[row][col] == 1:
+                multiply = 1 / matrix[row][col]
+                id_inv = row_op_1(id_inv, row, row, (1 / matrix[row][col]))
+                matrix = row_op_1(matrix, row, row, (1 / matrix[row][col]))
+                count += 1
+                for const in range(n):
+                    if const == row:
+                        continue
+                    multiply = matrix[const][col]
+                    id_inv = row_op_2(id_inv, const, row, matrix[const][col])
+                    matrix = row_op_2(matrix, const, row, matrix[const][col])
+
+                    count += 1
+
+    if matrix == gen_id_mat1(n):
+        print("ГОТОВАЯ МАТРИЦА:")
+        print()
+        disp(id_inv)
+        menu()
+    else:
+        print("Не итерирумая")
+        inverse_matrix()
+
+
+def menu():
     select = int(input('''
 select funct:
 1 - matrix addition
@@ -188,6 +267,7 @@ select funct:
 3 - matrix multiplication
 4 - matrix transpose
 5 - determinant
+6 - inverse matrix
 0 - exit
 '''))
     if select == 1:
@@ -200,11 +280,13 @@ select funct:
         matrix_transpose()
     elif select == 5:
         determinant()
+    elif select == 6:
+        inverse_matrix()
     elif select == 0:
         print('bye')
     else:
         print('try again')
-        main()
+        menu()
 
 
-main()
+menu()
