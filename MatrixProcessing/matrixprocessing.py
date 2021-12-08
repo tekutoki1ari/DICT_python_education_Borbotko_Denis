@@ -250,12 +250,12 @@ def inverse_matrix():
                     count += 1
 
     if matrix == gen_id_mat1(n):
-        print("ГОТОВАЯ МАТРИЦА:")
+        print("Your matrix:")
         print()
         disp(id_inv)
         menu()
     else:
-        print("Не итерирумая")
+        print("This matrix cant be inverse")
         inverse_matrix()
 
 
