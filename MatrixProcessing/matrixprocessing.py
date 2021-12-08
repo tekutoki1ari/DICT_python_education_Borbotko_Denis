@@ -1,3 +1,4 @@
+import copy
 
 
 def matrix_addition():
@@ -145,6 +146,40 @@ def matrix_transpose():
         matrix_transpose()
 
 
+def determinant():
+    matrix_def = []
+    size = input('Input size matrix\n>>> ')
+    size = size.replace(' ', '')
+    na = int(size[1])
+    print('Matrix')
+    for i in range(0, na):
+        line_def = []
+        for j in range(0, na):
+            line_def.append(int(input(f'Element {j}\n>>> ')))
+        matrix_def.append(line_def)
+
+    def calc(n, matrix):
+        if n == 2:
+            d = matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
+            return d
+        else:
+            d = int(0)
+            temp = copy.deepcopy(matrix)
+            line = copy.deepcopy(temp[0])
+            temp.pop(0)
+            for j in range(0, n):
+                temp2 = copy.deepcopy(temp)
+                for k in range(0, n - 1):
+                    temp2[k].pop(j)
+                d += ((-1) ** (0 + j + 2)) * line[j] * (calc(n - 1, temp2))
+            return d
+
+    for i in matrix_def:
+        print(' '.join(map(str, i)))
+    print(f'Your determinant:  {str(calc(na, matrix_def))}')
+    main()
+
+
 def main():
     select = int(input('''
 select funct:
@@ -152,6 +187,7 @@ select funct:
 2 - matrix constant multiplication
 3 - matrix multiplication
 4 - matrix transpose
+5 - determinant
 0 - exit
 '''))
     if select == 1:
@@ -162,6 +198,8 @@ select funct:
         matrix_multiplication()
     elif select == 4:
         matrix_transpose()
+    elif select == 5:
+        determinant()
     elif select == 0:
         print('bye')
     else:
